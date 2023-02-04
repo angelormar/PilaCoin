@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <!-- DevExtreme theme -->
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/22.2.3/css/dx.light.css">
+
+    <!-- DevExtreme library -->
+    <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/22.2.3/js/dx.all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/devexpress-diagram/2.1.65/dx-diagram.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body class="dx-viewport">
+    <style>
+        
+        html {
+            background-image: url("hacker.png");
+            background-repeat: no-repeat; background-size: cover; /* Resize the background image to cover the entire container */
+
+        }
+
+        span.label{
+            color: aliceblue;
+        }
+        #form {
+            margin-top: 25px;
+        }
+
+        #select-company-text {
+            display: none;
+        }
+
+        .options {
+            padding: 20px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 260px;
+            top: 0;
+            background-color: rgba(191, 191, 191, 0.15);
+        }
+
+        .caption {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .option {
+            margin-top: 10px;
+        }
+    </style>
+    <div class="demo-container">
+        <div id="form-demo">
+            <div class="widget-container">
+                <div id="select-company-text">Select company:</div>
+                <div id="select-company"></div>
+                <div id="form"></div>
+            </div>
+            <div class="options">
+                <div class="caption"><span class="label">Options</span></div>
+                <div class="option">
+                    <span class="label">Iniciar/pausar mineração:</span>
+                    <div id="minerar-pila"></div>
+                </div>
+                <div class="option">
+                    <div id="minerar-bloco"></div>
+                </div>
+                <div class="option">
+                    <span class="label">Validar dos cumpadres:</span>
+                    <div id="validar-pila"></div>
+                </div>
+                <div class="option">
+                    <div id="validar-bloco"></div>
+                </div>
+                <div class="option">
+                    <span class="label">Transferir:</span>
+                    <div id="usuario-transferir"></div>
+                </div>
+                <div class="option">
+                    <div id="valor-transferir"></div>
+                </div>
+                <div class="option">
+                    <div id="read-only"></div>
+                </div>
+                <div class="option">
+                    <div id="show-colon"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // You can create the Form widget using the following code.
+        // Read more at https://js.devexpress.com/Documentation/Guide/Widgets/Common/Advanced/3rd-Party_Frameworks_Integration_API/#Create_and_Configure_a_Widget.
+        $(() => {
+
+            const socket = new WebSocket('ws://localhost:8080');
+
+            // Connection opened
+            socket.addEventListener('open', (event) => {
+                socket.send('Hello Server!');
+            });
+
+            // Listen for messages
+            socket.addEventListener('message', (event) => {
+                console.log('Message from server ', event.data);
+            });
+
+            function getUsuariosPila() {
+                fetch('http://srv-ceesp.proj.ufsm.br:8097/usuario/all').then((response) => response.json()).then((data) => init(data));
+            }
+
+            getUsuariosPila()
+            function init(data) {
+                console.log(data)
+
+                const companySelectorText = $('#select-company-text');
+
+                $('#minerar-pila').dxButton({
+                    stylingMode: 'contained',
+                    text: 'Minerar Pilas',
+                    type: 'normal',
+                    width: 140,
+                    onClick() {
+                        DevExpress.ui.notify('The Contained button was clicked');
+                    },
+                });
+
+                $('#minerar-bloco').dxButton({
+                    stylingMode: 'contained',
+                    text: 'Minerar Blocos',
+                    type: 'normal',
+                    width: 140,
+                    onClick() {
+                        DevExpress.ui.notify('The Contained button was clicked');
+                    },
+                });
+
+                $('#validar-pila').dxButton({
+                    stylingMode: 'contained',
+                    text: 'Validar Pilas',
+                    type: 'normal',
+                    width: 140,
+                    onClick() {
+                        DevExpress.ui.notify('The Contained button was clicked');
+                    },
+                });
+
+                $('#validar-bloco').dxButton({
+                    stylingMode: 'contained',
+                    text: 'Validar Blocos',
+                    type: 'normal',
+                    width: 140,
+                    onClick() {
+                        DevExpress.ui.notify('The Contained button was clicked');
+                    },
+                });
+
+                $('#usuario-transferir').dxSelectBox({
+                    dataSource: data,
+                    valueExpr: "id",
+                    displayExpr: "nome",
+                    onValueChanged(data) {
+                    },
+                });
+                $('#valor-transferir').dxNumberBox({
+                    value: undefined,
+                    max: 550,
+                    onValueChanged(data) {
+                        form.option('width', data.value);
+                    },
+                });
+                $('#columns-count').dxSelectBox({
+                    items: ['auto', 1, 2, 3],
+                    value: 2,
+                    onValueChanged(data) {
+                        form.option('colCount', data.value);
+                    },
+                });
+
+                $('#min-column-width').dxSelectBox({
+                    items: [150, 200, 300],
+                    value: 300,
+                    onValueChanged(data) {
+                        form.option('minColWidth', data.value);
+                    },
+                });
+
+
+
+                $('#read-only').dxCheckBox({
+                    text: 'readOnly',
+                    value: false,
+                    onValueChanged(data) {
+                        form.option('readOnly', data.value);
+                    },
+                });
+
+                $('#show-colon').dxCheckBox({
+                    text: 'showColonAfterLabel',
+                    value: true,
+                    onValueChanged(data) {
+                        form.option('showColonAfterLabel', data.value);
+                    },
+                });
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>
