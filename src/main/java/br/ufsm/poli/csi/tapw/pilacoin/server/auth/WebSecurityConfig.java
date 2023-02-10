@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
 // Não cheque essas requisições
                 .authorizeRequests()
-                .antMatchers("/authenticate", "/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
+                .antMatchers("/front.php", "/pilacoin/*", "/pilaBloco/**", "/authenticate", "/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
                         "/configuration/**", "/swagger-ui.html", "/webjars/**", "/websocket/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll().
 // Qualquer outra requisição deve ser checada
@@ -59,8 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.cors();
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+      //  httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
 
 
 }

@@ -1,4 +1,4 @@
-package br.ufsm.poli.csi.tapw.pilacoin.server.colherdecha;
+package br.ufsm.poli.csi.tapw.pilacoin.server.service;
 
 import br.ufsm.poli.csi.tapw.pilacoin.model.PilaCoin;
 import br.ufsm.poli.csi.tapw.pilacoin.model.PilaCoinAmigo;
@@ -20,7 +20,8 @@ public class ValidaPilaCoinService {
     @Value("${endereco.server}")
     private String enderecoServer;
 
-    public ValidaPilaCoinService(){}
+    public ValidaPilaCoinService() {
+    }
 
     //@PostConstruct
     @SneakyThrows
@@ -42,7 +43,7 @@ public class ValidaPilaCoinService {
 
     @SneakyThrows
     public String validaPilaCoinAmigo(PilaCoinAmigo pila) {
-       // System.out.println("enderecoServer do amigo");
+        // System.out.println("enderecoServer do amigo");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         //headers.set("Authorization", "Bearer " + accessToken);
@@ -50,9 +51,10 @@ public class ValidaPilaCoinService {
         RestTemplate restTemplate = new RestTemplate();
         try {
             ResponseEntity<String> resp = restTemplate.postForEntity("http://srv-ceesp.proj.ufsm.br:8097/pilacoin/validaPilaOutroUsuario", entity, String.class);
-            if(resp.getBody().equals("\"ok\"")){
+            if (resp.getBody().equals("\"ok\"")) {
                 System.out.println("Pila amigo validado");
             }
+            System.out.println(resp.getBody());
             return resp.getBody();
         } catch (Exception e) {
             System.out.println(e.getMessage());

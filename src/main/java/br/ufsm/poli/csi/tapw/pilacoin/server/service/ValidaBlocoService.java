@@ -1,4 +1,4 @@
-package br.ufsm.poli.csi.tapw.pilacoin.server.colherdecha;
+package br.ufsm.poli.csi.tapw.pilacoin.server.service;
 
 import br.ufsm.poli.csi.tapw.pilacoin.model.PilaCoinAmigo;
 import br.ufsm.poli.csi.tapw.pilacoin.model.Bloco;
@@ -45,7 +45,7 @@ public class ValidaBlocoService {
         RestTemplate restTemplate = new RestTemplate();
         try {
             ResponseEntity<String> resp = restTemplate.postForEntity("http://srv-ceesp.proj.ufsm.br:8097/bloco/validaBlocoOutroUsuario", entity, String.class);
-            if(resp.getBody().equals("\"ok\"")){
+            if (resp.getBody().equals("\"ok\"")) {
                 System.out.println("Bloco amigo validado");
             }
             return resp.getBody();

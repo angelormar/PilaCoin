@@ -1,5 +1,9 @@
-package br.ufsm.poli.csi.tapw.pilacoin.server.auth;
+package br.ufsm.poli.csi.tapw.pilacoin.server.controller;
 
+import br.ufsm.poli.csi.tapw.pilacoin.server.auth.JwtRequest;
+import br.ufsm.poli.csi.tapw.pilacoin.server.auth.JwtResponse;
+import br.ufsm.poli.csi.tapw.pilacoin.server.auth.JwtTokenUtil;
+import br.ufsm.poli.csi.tapw.pilacoin.server.auth.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

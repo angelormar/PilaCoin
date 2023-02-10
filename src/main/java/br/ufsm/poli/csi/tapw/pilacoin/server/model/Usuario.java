@@ -1,20 +1,32 @@
 package br.ufsm.poli.csi.tapw.pilacoin.server.model;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@JsonPropertyOrder(alphabetic = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Usuario {
 
     @Id
     @GeneratedValue
     private Long id;
-    private byte[] chavePublica;
-    private byte[] chavePrivada;
+    private byte[] chave_publica;
+    private byte[] chave_privada;
     private String nome;
+    private String senha;
+    private transient String token;
+
 
     public Long getId() {
         return id;
@@ -24,20 +36,20 @@ public class Usuario {
         this.id = id;
     }
 
-    public byte[] getChavePublica() {
-        return chavePublica;
+    public byte[] getChave_publica() {
+        return chave_publica;
     }
 
-    public void setChavePublica(byte[] chavePublica) {
-        this.chavePublica = chavePublica;
+    public void setChave_publica(byte[] chavePublica) {
+        this.chave_publica = chavePublica;
     }
 
-    public byte[] getChavePrivada() {
-        return chavePrivada;
+    public byte[] getChave_privada() {
+        return chave_privada;
     }
 
-    public void setChavePrivada(byte[] chavePrivada) {
-        this.chavePrivada = chavePrivada;
+    public void setChave_privada(byte[] chavePrivada) {
+        this.chave_privada = chavePrivada;
     }
 
     public String getNome() {
@@ -47,4 +59,5 @@ public class Usuario {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
 }

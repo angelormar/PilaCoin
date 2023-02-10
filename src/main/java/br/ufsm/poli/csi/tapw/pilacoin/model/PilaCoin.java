@@ -8,7 +8,7 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Null;
+//import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.PublicKey;

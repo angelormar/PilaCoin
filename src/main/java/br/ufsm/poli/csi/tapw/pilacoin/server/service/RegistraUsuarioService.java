@@ -1,4 +1,4 @@
-package br.ufsm.poli.csi.tapw.pilacoin.server.colherdecha;
+package br.ufsm.poli.csi.tapw.pilacoin.server.service;
 
 import br.ufsm.poli.csi.tapw.pilacoin.server.model.Usuario;
 import br.ufsm.poli.csi.tapw.pilacoin.server.repositories.UsuarioRepository;
@@ -13,17 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import javax.crypto.SecretKey;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.security.*;
-import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class RegistraUsuarioService {
@@ -40,6 +35,22 @@ public class RegistraUsuarioService {
     @PostConstruct
     public void init() {
         System.out.println("Registrado usuário: " + registraUsuario("angeo =)"));
+    }
+
+    public static PublicKey getChavePublica() {
+        return CHAVE_PUBLICA;
+    }
+
+    public static void setChavePublica(PublicKey chavePublica) {
+        CHAVE_PUBLICA = chavePublica;
+    }
+
+    public static PrivateKey getChavePrivada() {
+        return CHAVE_PRIVADA;
+    }
+
+    public static void setChavePrivada(PrivateKey chavePrivada) {
+        CHAVE_PRIVADA = chavePrivada;
     }
 
     @SneakyThrows
@@ -59,8 +70,8 @@ public class RegistraUsuarioService {
             UsuarioRest usuario = resp.getBody();
             Usuario usuarioBD = new Usuario();
             usuarioBD.setNome(usuarioRest.nome);
-            usuarioBD.setChavePublica(keyPair.getPublic().getEncoded());
-            usuarioBD.setChavePrivada(keyPair.getPrivate().getEncoded());
+            usuarioBD.setChave_publica(keyPair.getPublic().getEncoded());
+            usuarioBD.setChave_privada(keyPair.getPrivate().getEncoded());
             usuarioRepostory.save(usuarioBD);
             return usuario;
         } catch (Exception e) {
@@ -73,13 +84,13 @@ public class RegistraUsuarioService {
     }
 
     @SneakyThrows
-    private void initPubKey(){
-      //  File rafaelPub = new File("C:\\Users\\aluno\\Downloads\\master-pub.key");
-      //  FileInputStream pubIn = new FileInputStream(rafaelPub);
-       // byte[] barrPub = new byte[(int) pubIn.getChannel().size()];
-      //  pubIn.read(barrPub);
-     //   PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(barrPub));
-      //  CHAVE_PUBLICA_RAFAEL = publicKey;
+    private void initPubKey() {
+        //  File rafaelPub = new File("C:\\Users\\aluno\\Downloads\\master-pub.key");
+        //  FileInputStream pubIn = new FileInputStream(rafaelPub);
+        // byte[] barrPub = new byte[(int) pubIn.getChannel().size()];
+        //  pubIn.read(barrPub);
+        //   PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(barrPub));
+        //  CHAVE_PUBLICA_RAFAEL = publicKey;
     }
 
     @SneakyThrows
